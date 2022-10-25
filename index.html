@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script src="./js/parse_isObject.js"></script>
+
+  <script>
+    let obj1 = {
+      name: "kobe",
+      age: 19,
+      friends: {
+        name: "jame"
+      }
+    }
+
+    // let obj2 = JSON.parse(JSON.stringify(obj1))
+    // console.log(obj2.friends.name)
+    // obj2.friends.name = "kross"
+    // console.log(obj2.friends.name, obj1.friends.name)
+
+
+    // 深拷贝函数
+    function deepCopy(originValue, map = new Map()) {
+      // 1.如果是原始类型, 直接返回
+      if (!isObject(originValue)) {
+        return originValue
+      }
+
+      if (map.get(originValue)) {
+        return map.get(originValue)
+      }
+
+      // 2.如果是对象类型, 才需要创建对象
+      const newObj = Array.isArray(originValue) ? [] : {}
+      map.set(originValue, newObj)
+
+      for (const key in originValue) {
+        newObj[key] = deepCopy(originValue[key], map);
+      }
+
+      return newObj
+    }
+
+    // console.log(Array.isArray(123))
+
+    const info = {
+      name: "why",
+      age: 18,
+      friend: {
+        name: "kobe",
+        address: {
+          name: "洛杉矶",
+          detail: "斯坦普斯中心"
+        }
+      }
+    }
+    info.self = info
+
+    const newObj = deepCopy(info)
+    // info.friend.address.name = "北京市"
+    // console.log(newObj.friend.address.name)
+
+    console.log(newObj)
+
+    // let arr1 = [
+    //   { name: "小组", desc: { intro: "小书", info: "有意思的事情" } }
+    // ]
+
+    // const arr2 = deepCopy(arr1)
+    // arr2[0].name = "小队"
+    // arr2[0].desc.intro = "小算"
+    // console.log(arr1, arr2)
+
+  </script>
+</body>
+
+</html>
